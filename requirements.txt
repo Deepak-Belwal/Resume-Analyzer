@@ -1,0 +1,3 @@
+Backend             -->     Python + Flask
+Frontend            -->     HTML + CSS
+Skill Extraction    -->     Keyword Matching (Later ML based)
