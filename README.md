@@ -9,11 +9,8 @@ This analyzer will extract skills from a resume that's provided to it and find t
 <h5>Input : </h5>
 Resume text
 <h5>Process : </h5>
-i>  Extract skills using keywords.
+i>  Extract skills using keywords.<br>
 ii> Compare with predefined job skill sets.
 <h5>Output : </h5>
-i>  List of the skills detected.
+i>  List of the skills detected.<br>
 ii> Suggested job roles with match score.
-
-
-<h1>Tech Stack</h1>
