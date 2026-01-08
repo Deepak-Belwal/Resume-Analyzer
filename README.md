@@ -25,3 +25,12 @@ This analyzer will extract skills from a resume that's provided to it and find t
     - Skill names were normalized to remove case sensitivity during comparisons and computations.
     - Percentages are calculated with basic formulas to avoid confusion and formatted to show up to 2 decimal places for clarity.
     - Best job is simply chosen by comparing the percentage match of an individual's skills to the pre-defined job roles and displaying the one with highest suitability.
+- DAY 3:
+    - Enabled user to enter resume data as text.
+    - Created a function to extract tokens from the input text and process it further to filter out the required skills. This involved :
+        - Punctuation removal
+        - Whitespace tokenization
+        - Handling duplicates
+        - Text matching
+    - Handled various edge cases that occurred like division by zero during percentage calculation and skills not found in user input.
+    - Enhanced overall readability of the code by adding comments and dividing the complete code into different sections based on their functioning.
