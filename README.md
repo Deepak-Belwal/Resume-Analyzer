@@ -34,3 +34,7 @@ This analyzer will extract skills from a resume that's provided to it and find t
         - Text matching
     - Handled various edge cases that occurred like division by zero during percentage calculation and skills not found in user input.
     - Enhanced overall readability of the code by adding comments and dividing the complete code into different sections based on their functioning.
+- DAY 4:
+    - Made the code more flask friendly by updating the functions to return values instead of simply executing the logic and printing.
+    - Did final testing of the main logic and added docstrings and other comments to enhance readability even further.
+    - Added another important variable to store a list of unmatched values.
