@@ -81,6 +81,9 @@ skill_set = set() #Creating a set(Only uniqueness matters, order does not) of sk
 for skills in jobs_skills.values():
     skill_set.update(skills)
 
+
+
+
 # PROJECT FUNCTION SECTION
 
 # Skill Extraction Function
@@ -142,24 +145,30 @@ def check_skills(person_skills,jobs):
                 if skills not in matched_skills:
                     unmatched_skills.append(skills)
         return { #Return dictionary of Required Values
-        "Candidate_Skills" : person_skills,  
-        "Suitable_Job" : best_job, 
-        "Suitability" : suitability, 
-        "matching_skills" : matched_skills, 
-        "remaining_skills" : unmatched_skills
-        }
+        "Candidate_Skills" : person_skills, "Suitable_Job" : best_job, "Suitability" : suitability, "matching_skills" : matched_skills, "remaining_skills" : unmatched_skills}
 
 
-# MAIN EXECUTION BLOCK
 
-# Input Text
-print("Enter resume text:- ")
-input_text = input()
+# FLASK BLOCK
+from flask import Flask, request, jsonify
+app = Flask(__name__)
+@app.route("/")
+def home():
+    return "flask is running."
 
-p_skills = extract_skills(input_text)
-if p_skills == []: #Edge case handling
-    print("No required skills were found in the resume text!")
-else:
-    print(p_skills)
-    description_report = check_skills(p_skills,jobs_skills)
-    print(description_report)
+@app.route("/analyze", methods = ["POST"])
+def analyze_resume():
+    data = request.get_json()
+    if not data or "text" not in data:
+        return jsonify({"ERROR" : "Resume text not provided."}), 400
+    resume_text = data["text"]
+    skills = extract_skills(resume_text)
+    if not skills:
+        return jsonify({"SORRY":"No relevant skills found."}),400
+    result = check_skills(skills, jobs_skills)
+    if result == -1:
+        return jsonify({"SORRY":"No suitable job role found."}),200
+    return jsonify(result),200
+
+if __name__ == "__main__":
+    app.run(debug = True)
