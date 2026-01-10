@@ -38,3 +38,7 @@ This analyzer will extract skills from a resume that's provided to it and find t
     - Made the code more flask friendly by updating the functions to return values instead of simply executing the logic and printing.
     - Did final testing of the main logic and added docstrings and other comments to enhance readability even further.
     - Added another important variable to store a list of unmatched values.
+- DAY 5:
+    - Built a Flask app within the main code to host the backend server.
+    - Added a POST /analyze endpoint to invoke core functions when requested and handled edge cases.
+    - Tested the code using curl commands and verified the results for multiple edge cases.
