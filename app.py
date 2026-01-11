@@ -150,24 +150,37 @@ def check_skills(person_skills,jobs):
 
 
 # FLASK BLOCK
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+import json
 app = Flask(__name__)
 @app.route("/")
 def home():
-    return "flask is running."
+    return render_template("index.html")
 
 @app.route("/analyze", methods = ["POST"])
 def analyze_resume():
-    data = request.get_json()
+
+    raw_data = request.get_data(as_text=True)
+
+    if not raw_data:
+        return jsonify({"ERROR": "Empty request body"}), 400
+    try:
+        data = json.loads(raw_data)
+    except Exception:
+        return jsonify({"ERROR": "Invalid JSON payload"}), 400
+
     if not data or "text" not in data:
         return jsonify({"ERROR" : "Resume text not provided."}), 400
     resume_text = data["text"]
     skills = extract_skills(resume_text)
+
     if not skills:
-        return jsonify({"SORRY":"No relevant skills found."}),400
+        return jsonify({"SORRY":"No relevant skills found."}),200
     result = check_skills(skills, jobs_skills)
+    
     if result == -1:
         return jsonify({"SORRY":"No suitable job role found."}),200
+    
     return jsonify(result),200
 
 if __name__ == "__main__":
