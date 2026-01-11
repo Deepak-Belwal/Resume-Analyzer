@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>RESUME ANALYZER </title>
+    </head>
+    <body>
+        <h1>RESUME ANALYZER</h1>
+        
+        <br><br>
+        <textarea id="resumetext" rows="15" cols="80" placeholder="Resume text goes here..."></textarea>
+        
+        <br><br>
+        <button onclick="analyzeresume()">ANALYZE</button>
+
+        <pre id="result"></pre>
+
+        <script>
+            async function analyzeresume() {
+                const text = document.getElementById("resumetext").value;
+                if (!text) {
+                    document.getElementById("result").textContent =
+                        "Please enter resume text first.";
+                    return;
+                }
+                try {
+                    const response = await fetch("/analyze", {
+                        method : "POST", 
+                        headers : {
+                            "ContentType" : "application/json; charset =UTF-8"
+                        },
+                        body : JSON.stringify({text : text})
+                    });
+
+
+                    const data = await response.json();
+                    const resultDiv = document.getElementById("result");
+                    resultDiv.innerHTML = "";
+                    
+                    if (data.SORRY){
+                        resultDiv.textContent = data.SORRY;
+                        return;
+                    }
+
+                    const role_heading = document.createElement("h3");
+                    role_heading.textContent = "Best Job Role: " + data.Suitable_Job;
+                    resultDiv.appendChild(role_heading);
+                    
+                    const s_percent = document.createElement("p");
+                    const rounded_suitability = Number(data.Suitability).toFixed(2);
+                    s_percent.textContent = "Suitability: " + rounded_suitability + "%";
+                    resultDiv.appendChild(s_percent);
+
+                    const matched_title = document.createElement("h4");
+                    matched_title.textContent = "Matched Skills";
+                    resultDiv.appendChild(matched_title);
+                    const matched_list = document.createElement("ul");
+                    data.matching_skills.forEach(skill => {
+                        const li = document.createElement("li");
+                        li.textContent = skill;
+                        matched_list.appendChild(li);
+                    });
+                    resultDiv.appendChild(matched_list);
+
+                    const missing_title = document.createElement("h4");
+                    missing_title.textContent = "Missing Skills";
+                    resultDiv.appendChild(missing_title);
+                    const missing_list = document.createElement("ul");
+                    data.remaining_skills.forEach(skill => {
+                        const li = document.createElement("li");
+                        li.textContent = skill;
+                        missing_list.appendChild(li);
+                    });
+                    resultDiv.appendChild(missing_list);
+                }
+                catch (err) {
+                    console.error(err);
+                    document.getElementById("result").textContent =
+                        "Error occurred. Check console.";
+                }
+            }
+        </script>
+    </body>
+</html>
